@@ -27,11 +27,11 @@ namespace DiscordTutorialBot.Modules
             string[] options = message.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
             Random r = new Random();
-            string seletion = options[r.Next(0, options.Length)];
+            string selection = options[r.Next(0, options.Length)];
             
             var embed = new EmbedBuilder();
             embed.WithTitle("Choice for " + Context.User.Username);
-            embed.WithDescription(seletion);
+            embed.WithDescription(selection);
             embed.WithColor(new Color(255, 255, 0));
             embed.WithThumbnailUrl("https://orig00.deviantart.net/3033/f/2016/103/0/c/mercy_by_raichiyo33-d9yufl4.jpg");
             
