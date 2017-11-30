@@ -17,7 +17,6 @@ namespace DiscordTutorialBot.Modules
             embed.WithTitle("Message by " + Context.User.Username);
             embed.WithDescription(message);
             embed.WithColor(new Color(0, 255, 0));
-
             await Context.Channel.SendMessageAsync("", false, embed);
         }
 
