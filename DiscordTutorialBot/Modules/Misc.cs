@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 
 namespace DiscordTutorialBot.Modules
 {
@@ -35,6 +36,30 @@ namespace DiscordTutorialBot.Modules
             embed.WithThumbnailUrl("https://orig00.deviantart.net/3033/f/2016/103/0/c/mercy_by_raichiyo33-d9yufl4.jpg");
             
             await Context.Channel.SendMessageAsync("", false, embed);
+        }
+
+        [Command("secret")]
+        public async Task RevealSecret([Remainder]string arg = "")
+        {
+            if (!UserIsSecretOwner((SocketGuildUser)Context.User))
+            {
+                await Context.Channel.SendMessageAsync(":x: You need the SecretOwner role to do that. " + Context.User.Mention);
+                return;
+            }
+            var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
+            await dmChannel.SendMessageAsync(Utilities.GetAlert("SECRET"));
+        }
+
+        private bool UserIsSecretOwner(SocketGuildUser user)
+        {
+            string targetRoleName = "SecretOwner";
+            var result = from r in user.Guild.Roles
+                         where r.Name == targetRoleName
+                         select r.Id;
+            ulong roleID = result.FirstOrDefault();
+            if (roleID == 0) return false;
+            var targetRole = user.Guild.GetRole(roleID);
+            return user.Roles.Contains(targetRole);
         }
     }
 }
