@@ -36,6 +36,7 @@ namespace DiscordTutorialBot.Modules
             embed.WithThumbnailUrl("https://orig00.deviantart.net/3033/f/2016/103/0/c/mercy_by_raichiyo33-d9yufl4.jpg");
             
             await Context.Channel.SendMessageAsync("", false, embed);
+            DataStorage.AddPairToStorage(Context.User.Username + DateTime.Now.ToLongDateString(), selection);
         }
 
         [Command("secret")]
@@ -60,6 +61,12 @@ namespace DiscordTutorialBot.Modules
             if (roleID == 0) return false;
             var targetRole = user.Guild.GetRole(roleID);
             return user.Roles.Contains(targetRole);
+        }
+
+        [Command("data")]
+        public async Task GetData()
+        {
+            await Context.Channel.SendMessageAsync("Data Has " + DataStorage.GetPairsCount() + " pairs.");
         }
     }
 }
