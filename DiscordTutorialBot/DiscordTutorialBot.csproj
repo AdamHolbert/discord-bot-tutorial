@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>DiscordTutorialBot</RootNamespace>
     <AssemblyName>DiscordTutorialBot</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -151,6 +152,9 @@
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Core\DataStorage.cs" />
+    <Compile Include="Core\UserAccounts\UserAccount.cs" />
+    <Compile Include="Core\UserAccounts\UserAccounts.cs" />
     <Compile Include="DataStorage.cs" />
     <Compile Include="Modules\Misc.cs" />
     <Compile Include="Program.cs" />

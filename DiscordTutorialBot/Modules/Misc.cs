@@ -6,11 +6,29 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using DiscordTutorialBot.Core.UserAccounts;
 
 namespace DiscordTutorialBot.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
+        [Command("myStats")]
+        public async Task MyStats()
+        {
+            var account = UserAccounts.GetAccount(Context.User);
+            await Context.Channel.SendMessageAsync($"You have {account.XP} XP and {account.Points} points");
+        }
+
+        [Command("addXP")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        public async Task AddXP(uint xp)
+        {
+            var account = UserAccounts.GetAccount(Context.User);
+            account.XP += xp;
+            UserAccounts.SaveAccounts();
+            await Context.Channel.SendMessageAsync($"You gained {xp} XP.");
+        }
+
         [Command("echo")]
         public async Task Echo([Remainder]string message)
         {
