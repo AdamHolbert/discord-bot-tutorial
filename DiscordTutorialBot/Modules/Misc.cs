@@ -13,10 +13,14 @@ namespace DiscordTutorialBot.Modules
     public class Misc : ModuleBase<SocketCommandContext>
     {
         [Command("myStats")]
-        public async Task MyStats()
+        public async Task MyStats([Remainder]string arg = "")
         {
-            var account = UserAccounts.GetAccount(Context.User);
-            await Context.Channel.SendMessageAsync($"You have {account.XP} XP and {account.Points} points");
+            SocketUser target = null;
+            var mentionedUser = Context.Message.MentionedUsers.FirstOrDefault();
+            target = mentionedUser ?? Context.User;
+            
+            var account = UserAccounts.GetAccount(target);
+            await Context.Channel.SendMessageAsync($"{target.Username} has {account.XP} XP and {account.Points} points.");
         }
 
         [Command("addXP")]
