@@ -9,11 +9,37 @@ using Discord.Commands;
 using Discord.WebSocket;
 using DiscordTutorialBot.Core.UserAccounts;
 using NReco.ImageGenerator;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace DiscordTutorialBot.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
+        [Command("person")]
+        public async Task GetRandomPerson()
+        {
+            string json = "";
+            using (WebClient client = new WebClient())
+            {
+                json = client.DownloadString("https://randomuser.me/api/?gender=female&nat=US");    
+            }
+
+            var dataObject = JsonConvert.DeserializeObject<dynamic>(json);
+
+            string firstName = dataObject.results[0].name.first.ToString();
+            string lastName = dataObject.results[0].name.last.ToString();
+            string avatarURL = dataObject.results[0].picture.large.ToString();
+
+            var embed = new EmbedBuilder();
+            embed.WithThumbnailUrl(avatarURL);
+            embed.WithTitle("Generated Person");
+            embed.AddInlineField("First Name", firstName);
+            embed.AddInlineField("Last Name", lastName);
+
+            await Context.Channel.SendMessageAsync("", embed: embed);
+        }
+
         [Command("hello")]
         public async Task Hello(string color = "red")
         {
