@@ -11,11 +11,19 @@ using DiscordTutorialBot.Core.UserAccounts;
 using NReco.ImageGenerator;
 using System.Net;
 using Newtonsoft.Json;
+using Discord.Rest;
 
 namespace DiscordTutorialBot.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
+        [Command("react")]
+        public async Task HandleReactionMessage()
+        {
+            RestUserMessage msg = await Context.Channel.SendMessageAsync("React to me!");
+            Global.MessageIdToTrack = msg.Id;
+        }
+
         [Command("person")]
         public async Task GetRandomPerson()
         {
