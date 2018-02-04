@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using DiscordTutorialBot.Core.LevelingSystem;
+using DiscordTutorialBot.Core.UserAccounts;
 
 namespace DiscordTutorialBot
 {
@@ -29,6 +30,14 @@ namespace DiscordTutorialBot
             if (msg == null) return;
             var context = new SocketCommandContext(_client, msg);
             if (context.User.IsBot) return;
+
+            // Mute check
+            var userAccount = UserAccounts.GetAccount(context.User);
+            if(userAccount.IsMuted)
+            {
+                await context.Message.DeleteAsync();
+                return;
+            }
 
             // Leveling up
             Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel);

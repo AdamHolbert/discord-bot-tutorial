@@ -17,6 +17,45 @@ namespace DiscordTutorialBot.Modules
 {
     public class Misc : ModuleBase<SocketCommandContext>
     {
+        [Command("Warn")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        public async Task WarnUser(IGuildUser user)
+        {
+            var userAccount = UserAccounts.GetAccount((SocketUser)user);
+            userAccount.NumberOfWarnings++;
+            UserAccounts.SaveAccounts();
+
+            if(userAccount.NumberOfWarnings >= 3)
+            {
+                await user.Guild.AddBanAsync(user, 5);
+            }
+            else if(userAccount.NumberOfWarnings == 2)
+            {
+                // perhaps kick
+            }
+            else if (userAccount.NumberOfWarnings == 1)
+            {
+                // perhaps send warning message
+            }
+        }
+
+        [Command("Kick")]
+        [RequireUserPermission(GuildPermission.KickMembers)]
+        [RequireBotPermission(GuildPermission.KickMembers)]
+        public async Task KickUser(IGuildUser user, string reason = "No reason provided.")
+        {
+            await user.KickAsync(reason);
+        }
+
+        [Command("Ban")]
+        [RequireUserPermission(GuildPermission.BanMembers)]
+        [RequireBotPermission(GuildPermission.BanMembers)]
+        public async Task BanUser(IGuildUser user, string reason = "No reason provided.")
+        {
+            await user.Guild.AddBanAsync(user, 5, reason);
+        }
+
         [Command("WhatLevelIs")]
         public async Task WhatLevelIs(uint xp)
         {
